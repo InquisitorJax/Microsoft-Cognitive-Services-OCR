@@ -1,7 +1,8 @@
-﻿namespace Xamarin.MCS.OCR.MCS
+﻿namespace Xamarin.MCS.OCR
 {
     public enum ApiKeyType
     {
+        FaceApi,
         ComputerVisionApi
     }
 

@@ -1,7 +1,7 @@
 ﻿using Microsoft.ProjectOxford.Vision;
 using Xamarin.Forms;
 
-namespace Xamarin.MCS.OCR.MCS.OCR
+namespace Xamarin.MCS.OCR
 {
     public interface IVisionClientFactory
     {
@@ -15,9 +15,12 @@ namespace Xamarin.MCS.OCR.MCS.OCR
             var keyProvider = DependencyService.Get<IApiKeyProvider>();
             string key = keyProvider.GetApiKey(ApiKeyType.ComputerVisionApi);
 
-            var faceServiceClient = new VisionServiceClient(key);
+            //NOTE: west central us hard-coded for all trial api keys
+            const string apiRoute = "https://westcentralus.api.cognitive.microsoft.com/vision/v1.0";
 
-            return faceServiceClient;
+            var client = new VisionServiceClient(key, apiRoute);
+
+            return client;
         }
     }
 }

@@ -6,6 +6,7 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <conv:ByteArrayToImageSourceConverter x:Key="bisc" />
+            <conv:BooleanToInvertedBooleanConverter x:Key="bib" />
             <Style TargetType="Button">
                 <Setter Property="BackgroundColor" Value="#FF3500" />
                 <Setter Property="Margin" Value="7,7,7,0" />
@@ -27,21 +28,28 @@
             <StackLayout Orientation="Vertical">
                 <Label FontSize="Large"
                        HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center"
                        Text="OPTICAL CHARACTER RECOGNITION" />
                 <Label FontSize="Small"
                        HorizontalOptions="Center"
                        HorizontalTextAlignment="Center"
                        Text="Recognize text from images using Microsoft Cognitive Services Computer Vision API" />
 
-                <Button Command="{Binding TakePictureCommand}" Text="Take Picture" />
-                <Button Command="{Binding ChoosePictureCommand}" Text="Choose Picture" />
-                <Button Command="{Binding LoadJobCardCommand}" Text="Open Sample Job Card" />
+                <Button Command="{Binding TakePictureCommand}"
+                        IsEnabled="{Binding IsBusy, Converter={StaticResource bib}}"
+                        Text="Take Picture" />
+                <Button Command="{Binding ChoosePictureCommand}"
+                        IsEnabled="{Binding IsBusy, Converter={StaticResource bib}}"
+                        Text="Choose Picture" />
+                <Button Command="{Binding LoadJobCardCommand}"
+                        IsEnabled="{Binding IsBusy, Converter={StaticResource bib}}"
+                        Text="Open Sample Job Card" />
                 <Image HeightRequest="100"
                        Source="{Binding SampleImage, Converter={StaticResource bisc}, ConverterParameter=ic_image}"
                        WidthRequest="100" />
             </StackLayout>
 
-            <Label Text="{Binding TextResult}" />
+            <Label Grid.Row="1" Text="{Binding TextResult}" />
         </Grid>
     </ContentPage.Content>
 </ContentPage>

@@ -1,6 +1,5 @@
 ﻿using Plugin.Media;
 using Plugin.Media.Abstractions;
-using System.IO;
 using System.Threading.Tasks;
 using Wibci.LogicCommand;
 
@@ -42,12 +41,7 @@ namespace Xamarin.MCS.OCR.Media
 
             if (mediaFile != null)
             {
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    mediaFile.GetStream().CopyTo(ms);
-                    retResult.Image = ms.ToArray();
-                }
-
+                retResult.ImageStream = mediaFile.GetStream();
                 retResult.TaskResult = TaskResult.Success;
             }
             else

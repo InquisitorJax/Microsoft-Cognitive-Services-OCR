@@ -1,11 +1,12 @@
-﻿using Microsoft.ProjectOxford.Vision.Contract;
+﻿using Microsoft.ProjectOxford.Vision;
+using Microsoft.ProjectOxford.Vision.Contract;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Wibci.LogicCommand;
 using Xamarin.Forms;
 
-namespace Xamarin.MCS.OCR.MCS.OCR
+namespace Xamarin.MCS.OCR
 {
     public interface IRecognizeTextFromImageCommand : IAsyncLogicCommand<TextFromImageRecognitionRequest, TextRecognitionResult>
     {
@@ -21,19 +22,33 @@ namespace Xamarin.MCS.OCR.MCS.OCR
         public override async Task<TextRecognitionResult> ExecuteAsync(TextFromImageRecognitionRequest request)
         {
             TextRecognitionResult retResult = new TextRecognitionResult();
-            OcrResults text;
+            OcrResults text = null;
 
             var client = VisionClientFactory.Build();
 
-            using (var stream = request.ImageStream)
-                text = await client.RecognizeTextAsync(stream);
+            bool success = true;
+            try
+            {
+                using (var stream = request.ImageStream)
+                {
+                    text = await client.RecognizeTextAsync(stream);
+                }
+            }
+            catch (ClientException ex)
+            {
+                success = false;
+                retResult.Notification.Add("Error calling cognitive services: " + ex.Error.Message);
+            }
 
-            var wordCollection = from region in text.Regions
-                                 from line in region.Lines
-                                 from word in line.Words
-                                 select word.Text;
+            if (text != null && success)
+            {
+                var wordCollection = from region in text.Regions
+                                     from line in region.Lines
+                                     from word in line.Words
+                                     select word.Text;
 
-            retResult.TextResults = wordCollection.ToArray();
+                retResult.TextResults = wordCollection.ToArray();
+            }
 
             return retResult;
         }

@@ -1,7 +1,5 @@
 ﻿using Xamarin.Forms;
 using Xamarin.MCS.OCR;
-using Xamarin.MCS.OCR.MCS;
-using Xamarin.MCS.OCR.MCS.OCR;
 using Xamarin.MCS.OCR.Media;
 
 namespace XamarinForms

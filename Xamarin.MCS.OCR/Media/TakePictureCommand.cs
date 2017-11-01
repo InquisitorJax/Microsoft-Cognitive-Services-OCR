@@ -24,7 +24,7 @@ namespace Xamarin.MCS.OCR.Media
 
     public class SelectPictureResult : TaskCommandResult
     {
-        public byte[] Image { get; set; }
+        public Stream ImageStream { get; set; }
     }
 
     public class TakePictureCommand : AsyncLogicCommand<TakePictureRequest, SelectPictureResult>, ITakePictureCommand
@@ -62,11 +62,7 @@ namespace Xamarin.MCS.OCR.Media
             {
                 using (mediaFile)
                 {
-                    using (MemoryStream ms = new MemoryStream())
-                    {
-                        mediaFile.GetStream().CopyTo(ms);
-                        retResult.Image = ms.ToArray();
-                    }
+                    retResult.ImageStream = mediaFile.GetStream();
                 }
 
                 retResult.TaskResult = TaskResult.Success;
