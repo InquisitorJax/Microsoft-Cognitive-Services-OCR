@@ -22,3 +22,4 @@
 /XamarinForms/XamarinForms.UWP/obj
 /Xamarin.MCS.OCR/bin/Debug/netstandard2.0
 /Xamarin.MCS.OCR/obj
+/Xamarin.MCS.OCR/MCS/ApiKeyProvider.cs

@@ -1,0 +1,1 @@
+﻿https://blog.xamarin.com/performing-ocr-for-ios-android-and-windows-with-microsoft-cognitive-services/

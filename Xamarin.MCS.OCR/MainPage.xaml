@@ -1,12 +1,47 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+<ContentPage x:Class="Xamarin.MCS.OCR.MainPage"
+             xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Xamarin.MCS.OCR.MainPage">
+             xmlns:conv="clr-namespace:Wibci.Xamarin.Forms.Converters;assembly=Wibci.Xamarin.Forms.Converters">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <conv:ByteArrayToImageSourceConverter x:Key="bisc" />
+            <Style TargetType="Button">
+                <Setter Property="BackgroundColor" Value="#FF3500" />
+                <Setter Property="Margin" Value="7,7,7,0" />
+                <Setter Property="BorderRadius" Value="10" />
+                <Setter Property="HeightRequest" Value="40" />
+                <Setter Property="HorizontalOptions" Value="Fill" />
+                <Setter Property="TextColor" Value="White" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <Grid>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <StackLayout Orientation="Vertical">
+                <Label FontSize="Large"
+                       HorizontalOptions="Center"
+                       Text="OPTICAL CHARACTER RECOGNITION" />
+                <Label FontSize="Small"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center"
+                       Text="Recognize text from images using Microsoft Cognitive Services Computer Vision API" />
+
+                <Button Command="{Binding TakePictureCommand}" Text="Take Picture" />
+                <Button Command="{Binding ChoosePictureCommand}" Text="Choose Picture" />
+                <Button Command="{Binding LoadJobCardCommand}" Text="Open Sample Job Card" />
+                <Image HeightRequest="100"
+                       Source="{Binding SampleImage, Converter={StaticResource bisc}, ConverterParameter=ic_image}"
+                       WidthRequest="100" />
+            </StackLayout>
+
+            <Label Text="{Binding TextResult}" />
+        </Grid>
     </ContentPage.Content>
 </ContentPage>
