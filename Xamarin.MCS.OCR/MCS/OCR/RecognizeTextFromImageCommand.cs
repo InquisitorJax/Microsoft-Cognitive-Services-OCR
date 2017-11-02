@@ -1,4 +1,5 @@
-﻿using Microsoft.ProjectOxford.Vision;
+﻿using System.Diagnostics;
+using Microsoft.ProjectOxford.Vision;
 using Microsoft.ProjectOxford.Vision.Contract;
 using System.IO;
 using System.Linq;
@@ -8,18 +9,18 @@ using Xamarin.Forms;
 
 namespace Xamarin.MCS.OCR
 {
-    public interface IRecognizeTextFromImageCommand : IAsyncLogicCommand<TextFromImageRecognitionRequest, TextRecognitionResult>
+    public interface IRecognizeTextFromImageCommand : IAsyncLogicCommand<ImageRecognitionRequest, TextRecognitionResult>
     {
     }
 
-    public class RecognizeTextFromImageCommand : AsyncLogicCommand<TextFromImageRecognitionRequest, TextRecognitionResult>, IRecognizeTextFromImageCommand
+    public class RecognizeTextFromImageCommand : AsyncLogicCommand<ImageRecognitionRequest, TextRecognitionResult>, IRecognizeTextFromImageCommand
     {
         private IVisionClientFactory VisionClientFactory
         {
             get { return DependencyService.Get<IVisionClientFactory>(); }
         }
 
-        public override async Task<TextRecognitionResult> ExecuteAsync(TextFromImageRecognitionRequest request)
+        public override async Task<TextRecognitionResult> ExecuteAsync(ImageRecognitionRequest request)
         {
             TextRecognitionResult retResult = new TextRecognitionResult();
             OcrResults text = null;
@@ -32,6 +33,8 @@ namespace Xamarin.MCS.OCR
                 using (var stream = request.ImageStream)
                 {
                     text = await client.RecognizeTextAsync(stream);
+//                    var hwOps = await client.CreateHandwritingRecognitionOperationAsync(stream);
+//                    var result = await client.GetHandwritingRecognitionOperationResultAsync(hwOps);                    
                 }
             }
             catch (ClientException ex)
@@ -54,9 +57,9 @@ namespace Xamarin.MCS.OCR
         }
     }
 
-    public class TextFromImageRecognitionRequest
+    public class ImageRecognitionRequest
     {
-        public TextFromImageRecognitionRequest(Stream imageStream)
+        public ImageRecognitionRequest(Stream imageStream)
         {
             ImageStream = imageStream;
         }

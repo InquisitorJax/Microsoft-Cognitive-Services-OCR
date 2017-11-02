@@ -48,7 +48,7 @@ namespace Xamarin.MCS.OCR.Media
             }
 
             StoreCameraMediaOptions options = new StoreCameraMediaOptions();
-            options.Directory = "SyncfusionSamples";
+            options.Directory = "Temp";
             options.Name = DateTime.Now.ToString("yyyyMMddHHmmss") + ".jpg";
             if (request.MaxPixelDimension.HasValue)
             {

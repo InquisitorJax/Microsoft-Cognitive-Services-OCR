@@ -128,7 +128,7 @@ namespace Xamarin.MCS.OCR
 
             SampleImage = imageStream.ToByteArray();
 
-            var request = new TextFromImageRecognitionRequest(imageStream);
+            var request = new ImageRecognitionRequest(imageStream);
             var recogResult = await RecognizeTextCommand.ExecuteAsync(request);
 
             if (recogResult.IsValid())

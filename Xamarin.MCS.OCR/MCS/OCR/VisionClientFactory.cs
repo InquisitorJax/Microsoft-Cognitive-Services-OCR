@@ -17,7 +17,7 @@ namespace Xamarin.MCS.OCR
 
             //NOTE: west central us hard-coded for all trial api keys
             const string apiRoute = "https://westcentralus.api.cognitive.microsoft.com/vision/v1.0";
-
+            
             var client = new VisionServiceClient(key, apiRoute);
 
             return client;
