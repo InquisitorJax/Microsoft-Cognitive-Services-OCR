@@ -1,8 +1,10 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using Microsoft.ProjectOxford.Vision;
 using Microsoft.ProjectOxford.Vision.Contract;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Wibci.LogicCommand;
 using Xamarin.Forms;
@@ -25,7 +27,8 @@ namespace Xamarin.MCS.OCR
             TextRecognitionResult retResult = new TextRecognitionResult();
             OcrResults text = null;
 
-            var client = VisionClientFactory.Build();
+            var client = VisionClientFactory.Build(); //ERROR: Image not valid format ?!?
+//            var client = VisionClientFactory.BuildCustom();
 
             bool success = true;
             try
@@ -33,6 +36,11 @@ namespace Xamarin.MCS.OCR
                 using (var stream = request.ImageStream)
                 {
                     text = await client.RecognizeTextAsync(stream);
+                    //CUSTOM HTTPCLIENT implementation
+//                    var wordList = await client.GetWordsFromImage(stream);
+//                    retResult.TextResults = wordList.ToArray();
+
+                    //HANDWRITING TEST
 //                    var hwOps = await client.CreateHandwritingRecognitionOperationAsync(stream);
 //                    var result = await client.GetHandwritingRecognitionOperationResultAsync(hwOps);                    
                 }
