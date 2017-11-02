@@ -4,6 +4,9 @@ using System.Linq;
 
 using Foundation;
 using UIKit;
+using Wibci.Xamarin.Images;
+using Wibci.Xamarin.Images.iOS;
+using Xamarin.Forms;
 
 namespace XamarinForms.iOS
 {
@@ -24,6 +27,8 @@ namespace XamarinForms.iOS
         {
             global::Xamarin.Forms.Forms.Init();
             LoadApplication(new App());
+
+            DependencyService.Register<IResizeImageCommand, iOSImageResizeCommand>();
 
             return base.FinishedLaunching(app, options);
         }

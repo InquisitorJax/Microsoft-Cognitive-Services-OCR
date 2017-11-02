@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.ProjectOxford.Vision;
 using Microsoft.ProjectOxford.Vision.Contract;
@@ -27,38 +28,54 @@ namespace Xamarin.MCS.OCR
             TextRecognitionResult retResult = new TextRecognitionResult();
             OcrResults text = null;
 
-            var client = VisionClientFactory.Build(); //ERROR: Image not valid format ?!?
-//            var client = VisionClientFactory.BuildCustom();
+            var client = VisionClientFactory.Build(); 
 
-            bool success = true;
             try
             {
+                request.ImageStream.Seek(0, SeekOrigin.Begin);
                 using (var stream = request.ImageStream)
                 {
-                    text = await client.RecognizeTextAsync(stream);
-                    //CUSTOM HTTPCLIENT implementation
-//                    var wordList = await client.GetWordsFromImage(stream);
-//                    retResult.TextResults = wordList.ToArray();
+                    if (request.UseHandwriting)
+                    {
+                        var hwOps = await client.CreateHandwritingRecognitionOperationAsync(stream);
+                        var result = await client.GetHandwritingRecognitionOperationResultAsync(hwOps);
+                        retResult.TextResults = new List<string>();
+                        do
+                        {
+                            if (result.RecognitionResult == null)
+                            {
+                                retResult.Notification.Add("Invalid result returned");
+                                break;
+                            }
+                            var wordCollection = from line in result.RecognitionResult.Lines
+                                from word in line.Words
+                                select word.Text;
 
-                    //HANDWRITING TEST
-//                    var hwOps = await client.CreateHandwritingRecognitionOperationAsync(stream);
-//                    var result = await client.GetHandwritingRecognitionOperationResultAsync(hwOps);                    
+                            retResult.TextResults.AddRange(wordCollection.ToList());
+                            result = await client.GetHandwritingRecognitionOperationResultAsync(hwOps);
+
+                        } while (result.Status == HandwritingRecognitionOperationStatus.Running);
+
+                        if (result.Status == HandwritingRecognitionOperationStatus.Failed)
+                        {
+                            retResult.Notification.Add(result.Status.ToString());
+                        }
+                    }
+                    else
+                    {
+                        text = await client.RecognizeTextAsync(stream);
+                        var wordCollection = from region in text.Regions
+                            from line in region.Lines
+                            from word in line.Words
+                            select word.Text;
+
+                        retResult.TextResults = wordCollection.ToList();
+                    }                    
                 }
             }
             catch (ClientException ex)
             {
-                success = false;
                 retResult.Notification.Add("Error calling cognitive services: " + ex.Error.Message);
-            }
-
-            if (text != null && success)
-            {
-                var wordCollection = from region in text.Regions
-                                     from line in region.Lines
-                                     from word in line.Words
-                                     select word.Text;
-
-                retResult.TextResults = wordCollection.ToArray();
             }
 
             return retResult;
@@ -67,16 +84,18 @@ namespace Xamarin.MCS.OCR
 
     public class ImageRecognitionRequest
     {
-        public ImageRecognitionRequest(Stream imageStream)
+        public ImageRecognitionRequest(Stream imageStream, bool useHandwriting = false)
         {
             ImageStream = imageStream;
+            UseHandwriting = useHandwriting;
         }
 
         public Stream ImageStream { get; private set; }
+        public bool UseHandwriting { get; private set; }
     }
 
     public class TextRecognitionResult : CommandResult
     {
-        public string[] TextResults { get; set; }
+        public List<string> TextResults { get; set; }
     }
 }

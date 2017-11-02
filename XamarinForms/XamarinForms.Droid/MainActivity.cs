@@ -2,6 +2,9 @@
 using Android.Content.PM;
 using Android.OS;
 using Plugin.Permissions;
+using Wibci.Xamarin.Images;
+using Wibci.Xamarin.Images.Droid;
+using Xamarin.Forms;
 
 namespace XamarinForms.Droid
 {
@@ -19,6 +22,8 @@ namespace XamarinForms.Droid
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
             LoadApplication(new App());
+
+            DependencyService.Register<IResizeImageCommand, AndroidResizeImageCommand>();
         }
     }
 }

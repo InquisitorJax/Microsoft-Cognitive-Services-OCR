@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="..\Images\JobCard.jpg" Link="Samples\JobCard.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <EmbeddedResource Include="..\Images\EmptyJobCard.png" Link="Samples\EmptyJobCard.png" />
   </ItemGroup>
 
@@ -13,6 +17,7 @@
     <PackageReference Include="Prism.Core" Version="6.3.0" />
     <PackageReference Include="Validation" Version="2.4.18" />
     <PackageReference Include="Wibci.LogicCommand" Version="1.1.0" />
+    <PackageReference Include="Wibci.Xamarin.Images" Version="1.5.2" />
     <PackageReference Include="Wibcisoft.Xamarin.Forms.Converters" Version="1.0.2" />
     <PackageReference Include="Xam.Plugin.Media" Version="3.0.1" />
     <PackageReference Include="Xamarin.Forms" Version="2.4.0.38779" />
@@ -20,10 +25,6 @@
 
   <ItemGroup>
     <PackageReference Update="NETStandard.Library" Version="2.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Samples\" />
   </ItemGroup>
 
 </Project>

@@ -41,9 +41,14 @@
                 <Button Command="{Binding ChoosePictureCommand}"
                         IsEnabled="{Binding IsBusy, Converter={StaticResource bib}}"
                         Text="Choose Picture" />
-                <Button Command="{Binding LoadJobCardCommand}"
-                        IsEnabled="{Binding IsBusy, Converter={StaticResource bib}}"
+<!--                <Button Command="{Binding LoadJobCardCommand}"-->
+<!--                        IsEnabled="{Binding IsBusy, Converter={StaticResource bib}}"-->
                         Text="Open Sample Job Card" />
+                <StackLayout Orientation="Horizontal">
+                    <Switch IsToggled="{Binding UseHandwritingRecog}"></Switch>
+                    <Label Text="use handwriting recognition"></Label>
+                </StackLayout>
+                
                 <Label Text="{Binding BusyMessage}" IsVisible="{Binding IsBusy}" HorizontalTextAlignment="Center"/>
                 <ActivityIndicator Color="Red" IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"/>
                 <Image HeightRequest="100"
@@ -51,7 +56,27 @@
                        WidthRequest="100" />
             </StackLayout>
 
-            <Label Grid.Row="1" Text="{Binding TextResult}" />
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Label Text="{Binding TextResult.Count}" />
+
+                <ScrollView>
+                    <Label Grid.Row="1" Text="{Binding TextResult}"/>
+                </ScrollView>
+                
+<!--                <ScrollView>-->
+<!--                    <ListView ItemsSource="{Binding TextResult}">-->
+<!--                        <ListView.ItemTemplate>-->
+<!--                            <DataTemplate>-->
+<!--                                <TextCell Text="{Binding .}"></TextCell>-->
+<!--                            </DataTemplate>-->
+<!--                        </ListView.ItemTemplate>-->
+<!--                    </ListView>-->
+<!--                </ScrollView>-->
+            </Grid>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

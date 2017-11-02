@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using Wibci.Xamarin.Images;
+using Xamarin.Forms;
 using Xamarin.MCS.OCR;
 using Xamarin.MCS.OCR.Media;
 
@@ -16,10 +17,10 @@ namespace XamarinForms
             DependencyService.Register<IChoosePictureCommand, ChoosePictureCommand>();
 
             //VISION API
-            DependencyService.Register<IApiKeyProvider, ApiKeyProvider>();
-            //DependencyService.Register<IApiKeyProvider, YourApiKeyProvider>();
+//            DependencyService.Register<IApiKeyProvider, ApiKeyProvider>();
+            DependencyService.Register<IApiKeyProvider, YourApiKeyProvider>();
             DependencyService.Register<IVisionClientFactory, VisionClientFactory>();
-            DependencyService.Register<IRecognizeTextFromImageCommand, RecognizeTextFromImageCommand>();
+            DependencyService.Register<IRecognizeTextFromImageCommand, RecognizeTextFromImageCommand>();            
         }
 
         protected override void OnResume()

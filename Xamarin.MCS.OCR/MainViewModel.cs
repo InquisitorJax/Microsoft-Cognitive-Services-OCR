@@ -1,6 +1,9 @@
-﻿using Prism.Commands;
+﻿using System;
+using System.Collections.Generic;
+using Prism.Commands;
 using Prism.Mvvm;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Validation;
@@ -29,6 +32,14 @@ namespace Xamarin.MCS.OCR
         {
             get { return _busyMessage; }
             set { SetProperty(ref _busyMessage, value); }
+        }
+
+        private bool _useHandwritingRecog;
+
+        public bool UseHandwritingRecog
+        {
+            get => _useHandwritingRecog;
+            set => SetProperty(ref _useHandwritingRecog, value);
         }
 
         public ICommand ChoosePictureCommand { get; private set; }
@@ -106,7 +117,8 @@ namespace Xamarin.MCS.OCR
             BusyMessage = "...processing sample job card.";
             try
             {
-                var imageStream = ResourceLoader.GetEmbeddedResourceStream(GetType().Assembly, "EmptyJobCard.png");
+                string resoureceName = UseHandwritingRecog ? "JobCard.jpg" : "EmptyJobCard.png";
+                var imageStream = ResourceLoader.GetEmbeddedResourceStream(GetType().Assembly, "JobCard.jpg");
 
                 await ProcessImageStream(imageStream);
             }
@@ -126,14 +138,18 @@ namespace Xamarin.MCS.OCR
         {
             Requires.NotNull(imageStream, nameof(imageStream));
 
-            SampleImage = imageStream.ToByteArray();
+            TextResult = null;
 
-            var request = new ImageRecognitionRequest(imageStream);
+            var submitStream = await imageStream.ResizeAsync(1200);
+
+            SampleImage = submitStream.ToByteArray();            
+
+            var request = new ImageRecognitionRequest(submitStream, UseHandwritingRecog);
             var recogResult = await RecognizeTextCommand.ExecuteAsync(request);
 
             if (recogResult.IsValid())
             {
-                TextResult = recogResult.TextResults.ToString();
+                TextResult = String.Join(" ", recogResult.TextResults);
             }
             else
             {
@@ -150,9 +166,9 @@ namespace Xamarin.MCS.OCR
             BusyMessage = "...processing image from camera.";
             try
             {
-                var picRequest = new TakePictureRequest()
+                var picRequest = new TakePictureRequest
                 {
-                    MaxPixelDimension = 500,
+                    MaxPixelDimension = 800,
                     CameraOption = CameraOption.Back
                 };
 
