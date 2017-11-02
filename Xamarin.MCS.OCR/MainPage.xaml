@@ -1,5 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage x:Class="Xamarin.MCS.OCR.MainPage"
+﻿<ContentPage x:Class="Xamarin.MCS.OCR.MainPage"
              xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:conv="clr-namespace:Wibci.Xamarin.Forms.Converters;assembly=Wibci.Xamarin.Forms.Converters">
@@ -43,7 +42,7 @@
                         Text="Choose Picture" />
 <!--                <Button Command="{Binding LoadJobCardCommand}"-->
 <!--                        IsEnabled="{Binding IsBusy, Converter={StaticResource bib}}"-->
-                        Text="Open Sample Job Card" />
+<!--                        Text="Open Sample Job Card" />-->
                 <StackLayout Orientation="Horizontal">
                     <Switch IsToggled="{Binding UseHandwritingRecog}"></Switch>
                     <Label Text="use handwriting recognition"></Label>
