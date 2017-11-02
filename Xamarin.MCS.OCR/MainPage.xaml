@@ -44,6 +44,8 @@
                 <Button Command="{Binding LoadJobCardCommand}"
                         IsEnabled="{Binding IsBusy, Converter={StaticResource bib}}"
                         Text="Open Sample Job Card" />
+                <Label Text="{Binding BusyMessage}" IsVisible="{Binding IsBusy}" HorizontalTextAlignment="Center"/>
+                <ActivityIndicator Color="Red" IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"/>
                 <Image HeightRequest="100"
                        Source="{Binding SampleImage, Converter={StaticResource bisc}, ConverterParameter=ic_image}"
                        WidthRequest="100" />

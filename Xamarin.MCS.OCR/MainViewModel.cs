@@ -75,6 +75,7 @@ namespace Xamarin.MCS.OCR
             if (IsBusy)
                 return;
 
+            IsBusy = true;
             BusyMessage = "...processing image from device.";
             try
             {
@@ -101,6 +102,7 @@ namespace Xamarin.MCS.OCR
             if (IsBusy)
                 return;
 
+            IsBusy = true;
             BusyMessage = "...processing sample job card.";
             try
             {
@@ -144,6 +146,7 @@ namespace Xamarin.MCS.OCR
             if (IsBusy)
                 return;
 
+            IsBusy = true;
             BusyMessage = "...processing image from camera.";
             try
             {
